@@ -12,9 +12,9 @@ historial de cambios
 Como si fuera un mini sistema real de especificaciones de producto para ingenieros y arquitectos.
 
 (Semana 1 - Arquitectura)
-Crear repositorio. 
-Crear Venv.
-Crear requirements
+Crear repositorio. ✅
+Crear Venv. ✅
+Crear requirements  ✅
 
 Crear proyecto en Django.
 Crear aplicacion inicial(Users)
