@@ -31,7 +31,38 @@ Tarea2. Modelos, ORM, Shaping.
 Objetivo ? Diseñar modelos de la aplicacion.
 
 Modelos: 
-Book 
+Book, loans y readers. ✅
+Poder crear los books, loans y readers desde la GUI de admin junto con un superuser✅
+
+Tarea3. 
+Iniciar con Django Rest Framework. ✅
+Arrancar entiendo conceptos claves como:
+Serializers → ViewSets → Routers → Validaciones → Lógica de negocio.
+
+Serializer: Puente entre el modelo (datos en el BD) y la API (JSON que se dirige al front)
+
+ViewSets: Un viewSet es una vista que DRF llená con logica de CRUD, permitiendo operaciones como:
+list → GET /api/books/
+retrieve → GET /api/books/1/
+create → POST /api/books/
+update → PUT /api/books/1/
+partial_update → PATCH /api/books/1/
+destroy → DELETE /api/books/1/
+
+Router: Un router expone automáticamente las rutas REST sin que tú las crees a mano.
+(El router se creo en urls de Users haciendo un include en el proyecto. )
+
+Tarea4. 
+Crear el archivo Serializer.py✅
+Crear ViewSets✅
+crear Urls.py con Routers✅
+probar endpoints(Postman)✅
+
+
+
+
+
+
 
 
 
