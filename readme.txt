@@ -58,11 +58,20 @@ Crear ViewSets✅
 crear Urls.py con Routers✅
 probar endpoints(Postman)✅
 
+Tarea5. Implementar reglas de negocio (lógica de backend)
 
 
 
+Se generaran las reglas propias de la APi, osea, de la capa del backend.
+Reglas por implementar : 
 
+Poder consultar los usuarios,libros y prestamos creados✅
 
-
-
+Hacer
+No permitir prestar un libro si no está disponible
+No permitir prestar un libro si ya tiene un préstamo activo
+Marcar el libro como unavailable cuando se presta
+Marcar el libro como available al devolverlo
+No permitir devolver dos veces el mismo préstamo
+Validaciones claras + mensajes de error profesionales
 
