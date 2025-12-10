@@ -16,7 +16,7 @@ class BookViewSet(viewsets.ModelViewSet):
         book = self.get_object()
 
         #Verificar disponibilidad
-        if book.status != "Available":
+        if book.status != "available":
             return Response(
                 {"error" : "El libro no esta disponible para prestamo"},
                 status=status.HTTP_400_BAD_REQUEST
@@ -60,7 +60,41 @@ class BookViewSet(viewsets.ModelViewSet):
             {"message0":"Libro prestado con exito","loan_id":loan.id},
             status=status.HTTP_201_CREATED
         )
+
+    # POST /books/<id>/return/
+    @action(detail=True, methods=['post'])
+    def return_book(self, request, pk=None):
+        book = self.get_object()
+
+        #Prestamo Activo
+        active_loan = Loan.objects.filter(book=book, returned=False).first()
+        if not active_loan:
+            return Response(
+                {"error":"No existe un prestamo activo para este libro"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        #Evitar devolver dos veces.
+        if active_loan.returned:
+            return Response(
+                {"error":"Este libro ya fue devuelto anteriormente"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
+        #Marcar Devolucion.
+        active_loan.returned = True
+        active_loan.return_date = timezone.now()
+        active_loan.save()
+
+        #Cambiar estado del libro
+        book.status = "available"
+        book.save()
+
+        return Response(
+            {"message":"Libro devuelto correctamente"},
+            status = status.HTTP_200_OK
+        )
+
 class LoanViewSet(viewsets.ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer

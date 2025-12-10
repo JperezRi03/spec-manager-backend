@@ -60,8 +60,6 @@ probar endpoints(Postman)✅
 
 Tarea5. Implementar reglas de negocio (lógica de backend)
 
-
-
 Se generaran las reglas propias de la APi, osea, de la capa del backend.
 Reglas por implementar : 
 

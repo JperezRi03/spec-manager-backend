@@ -5,7 +5,7 @@ class LoanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loan
         fields = '__all__'
-        ready_only_fields = ["loan_date"]
+        read_only_fields = ["loan_date", "return_date"]
 
     def validate(self, data):
         book = data["book"]
@@ -32,6 +32,7 @@ class LoanSerializer(serializers.ModelSerializer):
         
         return data
     
+    #Crear Prestamos
     def create(self, validated_data):
         book = validated_data["book"]
 
