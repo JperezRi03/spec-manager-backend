@@ -11,7 +11,7 @@ class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
 
     # POST /books/<ID>/loan
-    @action(detaill=True, methods=['post'])
+    @action(detail=True, methods=['post'])
     def loan(self, request, pk=None):
         book = self.get_object()
 
@@ -31,15 +31,36 @@ class BookViewSet(viewsets.ModelViewSet):
             )
     
         #Validar si viene reader_id en la peticion
-
         reader_id = request.data.get("reader_id")
         if not reader_id:
             return Response(
                 {"Error":"No se capturo el reader_id"},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+        try:
+            reader = Reader.objects.get(id = reader_id)
+        except Reader.DoesNotExist:
+            return Response(
+                {"error":"El lector no existe."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        #5. Crear el prestamo
+        loan = Loan.objects.create(
+            book=book,
+            reader=reader
+        )
 
+        #Cambiar el estado del libro
+        book.status = "unavailable"
+        book.save()
 
+        return Response(
+            {"message0":"Libro prestado con exito","loan_id":loan.id},
+            status=status.HTTP_201_CREATED
+        )
+        
 class LoanViewSet(viewsets.ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
