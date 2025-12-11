@@ -66,10 +66,16 @@ Reglas por implementar :
 Poder consultar los usuarios,libros y prestamos creados✅
 
 Hacer
-No permitir prestar un libro si no está disponible
-No permitir prestar un libro si ya tiene un préstamo activo
-Marcar el libro como unavailable cuando se presta
-Marcar el libro como available al devolverlo
-No permitir devolver dos veces el mismo préstamo
-Validaciones claras + mensajes de error profesionales
+No permitir prestar un libro si no está disponible✅
+No permitir prestar un libro si ya tiene un préstamo activo✅
+Marcar el libro como unavailable cuando se presta✅
+Marcar el libro como available al devolverlo✅
+No permitir devolver dos veces el mismo préstamo✅
+Validaciones claras + mensajes de error profesionales✅
 
+Tarea6. 
+Vamos a hacer los Serializer Mejorados, haciendo :
+
+BookSerializer con información útil del estado real del libro.
+ReadSerializer con todos los prestamos de ese lector.
+LoanSerializer mostrando datos completos del libro y el del lector

@@ -1,7 +1,12 @@
 from rest_framework import serializers
+from django.utils import timezone
 from .models import Book,Loan,Reader
 
 class LoanSerializer(serializers.ModelSerializer):
+
+    book_detail = serializers.SerializerMethodField()
+    reader_detail = serializers.SerializerMethodField()
+
     class Meta:
         model = Loan
         fields = '__all__'
@@ -39,34 +44,82 @@ class LoanSerializer(serializers.ModelSerializer):
         #Cuando se presta el libro el estado cambia
         book.status = "unavailable"
         book.save()
-        loan = Loan.objects.create(**validated_data)
-        return loan
-
+        return Loan.objects.create(**validated_data)
+    
+    #Actualizar Prestamo
     def update(self, instance, validated_data):
-        returned = validated_data.get("returned", instance.returned)
+        mark_as_returned = validated_data.get("returned", instance.returned)
 
         #Si se marca como devuelto vuelve a estar disponible
-        if returned and not instance.returned:
+        if mark_as_returned:
+            #Ya estaba devuelto.
+            if instance.returned:
+                raise serializers.ValidationError({
+                    "loan" : "Este prestamo ya fue devuelto anteriormente."
+                })
+
+            # Actualizamos
+            instance.returned = True
+            instance.return_date = timezone.now()
+
+            # Libro vuelve a estar disponible
             instance.book.status = "available"
             instance.book.save()
-        elif returned and instance.returned:
-            #No se puede devolver dos veces 
-            raise serializers.ValidationError({
-                "loan" : "Este prestamo ya fue devuelto anteriormente."
-            })
 
-        return super().update(instance, validated_data)
+        return super().update(instance, validated_data) 
 
-
-
+    def get_book_detail(self,obj):
+        return{
+            "id": obj.book.id,
+            "title": obj.book.title,
+            "author": obj.book.author
+        }
+    
+    def get_reader_detail(self, obj):
+        return {
+            "id": obj.reader.id,
+            "name": f"{obj.reader.first_name} {obj.reader.last_name}"
+        }
 
 class BookSerializer(serializers.ModelSerializer):
+    current_loan = serializers.SerializerMethodField()
+    current_reader = serializers.SerializerMethodField()
+
     class Meta: 
         model = Book
         fields = '__all__'
 
+    def get_current_loan(self,obj):
+        loan = Loan.objects.filter(book=obj, returned=False).first()
+        if loan:
+            return LoanSerializer(loan).data
+        return None
+
+    def get_current_reader(self,obj):
+        loan = Loan.objects.filter(book=obj, returned=False).first()
+        if loan:
+            reader = loan.reader
+            return{
+                "id": reader.id,
+                "name": f"{reader.first_name} {reader.last_name}"
+            }
 
 class ReaderSerializer(serializers.ModelSerializer):
+    loans = serializers.SerializerMethodField()
+    
     class Meta:
         model = Reader
         fields = '__all__'
+
+    def get_loans(self, obj):
+        loans = Loan.objects.filter(reader=obj).order_by('-loan_date')
+        return [
+            {
+                "id": loan.id,
+                "book": loan.book.title,
+                "returned": loan.returned,
+                "loan_date": loan.loan_date,
+                "return_date": loan.return_date
+            }
+            for loan in loans
+        ]
