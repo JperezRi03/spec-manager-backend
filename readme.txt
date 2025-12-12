@@ -39,7 +39,7 @@ Iniciar con Django Rest Framework. ✅
 Arrancar entiendo conceptos claves como:
 Serializers → ViewSets → Routers → Validaciones → Lógica de negocio.
 
-Serializer: Puente entre el modelo (datos en el BD) y la API (JSON que se dirige al front)
+Serializer: Puente entre el modelo (datos en el BD) y la API (JSON que se dirige al front), reglas del negocio(Relaciones entre modelos, lanzar errores, validaciones).
 
 ViewSets: Un viewSet es una vista que DRF llená con logica de CRUD, permitiendo operaciones como:
 list → GET /api/books/
@@ -48,6 +48,7 @@ create → POST /api/books/
 update → PUT /api/books/1/
 partial_update → PATCH /api/books/1/
 destroy → DELETE /api/books/1/
+Solo controla request-response, permisos y ruteo.
 
 Router: Un router expone automáticamente las rutas REST sin que tú las crees a mano.
 (El router se creo en urls de Users haciendo un include en el proyecto. )
@@ -76,6 +77,6 @@ Validaciones claras + mensajes de error profesionales✅
 Tarea6. 
 Vamos a hacer los Serializer Mejorados, haciendo :
 
-BookSerializer con información útil del estado real del libro.
-ReadSerializer con todos los prestamos de ese lector.
-LoanSerializer mostrando datos completos del libro y el del lector
+BookSerializer con información útil del estado real del libro.✅
+ReadSerializer con todos los prestamos de ese lector.✅
+LoanSerializer mostrando datos completos del libro y el del lector✅
