@@ -1,6 +1,19 @@
 from django.db import models
-# Se necesita definir Book Y reader #
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
+
+class User(AbstractUser):
+    ROLE_CHOICES = [
+        ("admin","Admin"),
+        ("librerian","Librerian"),
+        ("reader","Reader")
+    ]
+    role = models.CharField(max_length=20,choices=ROLE_CHOICES, default="reader")
+    
+    def __str__(self):
+        return f"{self.username} ({self.role})"
+
+
 class Book(models.Model):
     title = models.CharField(max_length=50)
     author = models.CharField(max_length=50)
@@ -36,5 +49,3 @@ class Loan(models.Model): #Relacion de prestamos entre los libros y lo lectores#
     loan_date = models.DateTimeField(auto_now_add=True)
     return_date = models.DateTimeField(null=True, blank=True)
     returned = models.BooleanField(default=False)
-
-

@@ -80,3 +80,28 @@ Vamos a hacer los Serializer Mejorados, haciendo :
 BookSerializer con información útil del estado real del libro.✅
 ReadSerializer con todos los prestamos de ese lector.✅
 LoanSerializer mostrando datos completos del libro y el del lector✅
+
+Tarea7.
+AUTHENTICATION → ¿Quién eres?
+AUTHORIZATION → ¿Qué puedes hacer?
+
+Definicion de permisos para el software: 
+Reader = Cliente/usuario final que pide los prestamos
+Admin = Usuario que puede autenticarse para las API.
+Librarian = Usurio que puede administrar los prestamos.
+
+JWT = JSON Web Token es un token que el backend genera para los inicios de Sesion.
+
+Tarea: Implementar Autenticacion + roles + permisos(JWT)
+Objetivo:
+
+Proteger la API para que:
+Sin autenticación:
+No puedes crear, editar, eliminar nada
+
+Solo puedes ver libros (GET /books)
+Con autenticación + roles:
+
+Admin → controla todo
+Librarian → presta / devuelve / crea lectores
+Reader (modelo aparte) → solo consulta info

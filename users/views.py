@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdmin, IsLibrarian
 from rest_framework import viewsets, status
 from .models import Book, Loan, Reader
 from .serializer import BookSerializer, LoanSerializer, ReaderSerializer
@@ -9,6 +11,7 @@ from .serializer import BookSerializer, LoanSerializer, ReaderSerializer
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+    permission_classes = [IsLibrarian]
 
     # POST /books/<ID>/loan
     @action(detail=True, methods=['post'])
@@ -61,6 +64,11 @@ class BookViewSet(viewsets.ModelViewSet):
             status=status.HTTP_201_CREATED
         )
 
+    def get_permissions(self):
+        if self.action in ["create", "update", "partial_update", "destroy"]:
+            return [IsAdmin()]
+        return []  
+
     # POST /books/<id>/return/
     @action(detail=True, methods=['post'])
     def return_book(self, request, pk=None):
@@ -98,8 +106,15 @@ class BookViewSet(viewsets.ModelViewSet):
 class LoanViewSet(viewsets.ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
+    permission_classes = [IsLibrarian]
+    
+    def get_permissions(self):
+        if self.action in ["loan", "return_book", "create", "update"]:
+            return [IsAuthenticated(), IsLibrarian()]
+        return [IsAuthenticated()]
 
 class ReaderViewSet(viewsets.ModelViewSet):
     queryset = Reader.objects.all()
     serializer_class = ReaderSerializer
+    permission_classes = [IsAdmin]    
 # Create your views here.
