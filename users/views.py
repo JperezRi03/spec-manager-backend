@@ -11,7 +11,6 @@ from .serializer import BookSerializer, LoanSerializer, ReaderSerializer
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsLibrarian]
 
     # POST /books/<ID>/loan
     @action(detail=True, methods=['post'])
@@ -66,8 +65,8 @@ class BookViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update", "destroy"]:
-            return [IsAdmin()]
-        return []  
+            return [IsLibrarian()]
+        return []
 
     # POST /books/<id>/return/
     @action(detail=True, methods=['post'])
@@ -106,15 +105,16 @@ class BookViewSet(viewsets.ModelViewSet):
 class LoanViewSet(viewsets.ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
-    permission_classes = [IsLibrarian]
-    
+
     def get_permissions(self):
-        if self.action in ["loan", "return_book", "create", "update"]:
-            return [IsAuthenticated(), IsLibrarian()]
-        return [IsAuthenticated()]
+        if self.action in ["create", "update", "partial_update"]:
+            return [IsLibrarian()]
+        return []
 
 class ReaderViewSet(viewsets.ModelViewSet):
     queryset = Reader.objects.all()
     serializer_class = ReaderSerializer
-    permission_classes = [IsAdmin]    
+
+    def get_permissions(self):
+        return [IsAdmin()]
 # Create your views here.

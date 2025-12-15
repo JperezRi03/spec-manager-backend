@@ -81,7 +81,7 @@ BookSerializer con información útil del estado real del libro.✅
 ReadSerializer con todos los prestamos de ese lector.✅
 LoanSerializer mostrando datos completos del libro y el del lector✅
 
-Tarea7.
+Tarea7 parte A.
 AUTHENTICATION → ¿Quién eres?
 AUTHORIZATION → ¿Qué puedes hacer?
 
@@ -105,3 +105,13 @@ Con autenticación + roles:
 Admin → controla todo
 Librarian → presta / devuelve / crea lectores
 Reader (modelo aparte) → solo consulta info
+
+Tarea7 Parte B.
+Crear permisos personalizados
+Aplicar permisos por ViewSet
+
+¿Por qué NO es buena idea usar permission_classes = [...] fijo en estos ViewSets?
+
+Porque un ViewSet expone múltiples acciones con niveles de riesgo distintos.
+Usar permission_classes fijo obliga a aplicar el mismo nivel de acceso a operaciones que 
+deberían tener reglas diferentes, rompiendo el principio de menor privilegio y la escalabilidad del sistema.
