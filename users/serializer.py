@@ -6,11 +6,19 @@ class LoanSerializer(serializers.ModelSerializer):
 
     book_detail = serializers.SerializerMethodField()
     reader_detail = serializers.SerializerMethodField()
+    created_by = serializers.StringRelatedField(read_only=True)
+    returned_by = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Loan
         fields = '__all__'
-        read_only_fields = ["loan_date", "return_date"]
+        read_only_fields = [
+            "loan_date",
+            "return_date",
+            "created_by",
+            "returned_by",
+        ]
+
 
     def validate(self, data):
         book = data["book"]

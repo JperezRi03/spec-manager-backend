@@ -106,6 +106,15 @@ class LoanViewSet(viewsets.ModelViewSet):
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(created_by= self.request.user)
+
+    def perform_update(self, serializer):
+        if serializer.validated_data.get("returned"):
+            serializer.save(returned_by = self.request.user)
+        else:
+            serializer.save()
+    
     def get_permissions(self):
         if self.action in ["create", "update", "partial_update"]:
             return [IsLibrarian()]

@@ -97,21 +97,32 @@ Objetivo:
 
 Proteger la API para que:
 Sin autenticación:
-No puedes crear, editar, eliminar nada
+No puedes crear, editar, eliminar nada✅
 
 Solo puedes ver libros (GET /books)
 Con autenticación + roles:
 
-Admin → controla todo
+Admin → controla todo✅
 Librarian → presta / devuelve / crea lectores
 Reader (modelo aparte) → solo consulta info
 
 Tarea7 Parte B.
-Crear permisos personalizados
-Aplicar permisos por ViewSet
+Crear permisos personalizados✅
+Aplicar permisos por ViewSet✅
 
 ¿Por qué NO es buena idea usar permission_classes = [...] fijo en estos ViewSets?
 
 Porque un ViewSet expone múltiples acciones con niveles de riesgo distintos.
 Usar permission_classes fijo obliga a aplicar el mismo nivel de acceso a operaciones que 
 deberían tener reglas diferentes, rompiendo el principio de menor privilegio y la escalabilidad del sistema.
+
+Tarea8.
+Agregar trazabilidad al sistema sin romper:
+Modelos
+Lógica
+Permisos
+
+Auditoría de préstamos (Loan):
+Quién creó el préstamo
+Quién marcó como devuelto
+Cuándo pasó cada cosa
