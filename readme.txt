@@ -118,11 +118,43 @@ deberían tener reglas diferentes, rompiendo el principio de menor privilegio y 
 
 Tarea8.
 Agregar trazabilidad al sistema sin romper:
-Modelos
-Lógica
-Permisos
+Modelos✅
+Lógica✅
+Permisos✅
 
 Auditoría de préstamos (Loan):
-Quién creó el préstamo
-Quién marcó como devuelto
-Cuándo pasó cada cosa
+Quién creó el préstamo✅
+Quién marcó como devuelto✅
+Cuándo pasó cada cosa✅
+
+TAREA 9 — Problema N+1
+El problema N+1 ocurre cuando:
+
+Hacemos 1 query principal y luego N queries adicionales
+para obtener relaciones de esos resultados.
+
+Ejemplo en contexto:
+Teniendo este endpoint:
+
+GET /api/loans/ Y se encuentran 100 préstamos.
+
+En el serializer:
+
+loan.book.title
+loan.reader.first_name
+
+¿Qué hace Django?
+Query para traer loans:    SELECT * FROM loan;
+Por cada loan:
+SELECT * FROM book WHERE id = X;
+SELECT * FROM reader WHERE id = Y;
+
+Resultado:
+
+1 query principal
++100 libros
++100 lectores
+= 201 queries 
+
+Si accedes a una FK → usa select_related
+Si accedes a ManyToMany / reverse → prefetch_related

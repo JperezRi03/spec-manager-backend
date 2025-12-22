@@ -103,7 +103,9 @@ class BookViewSet(viewsets.ModelViewSet):
         )
 
 class LoanViewSet(viewsets.ModelViewSet):
-    queryset = Loan.objects.all()
+    queryset = Loan.objects.select_related(
+        "book","reader","created_by","returned_by"
+    )
     serializer_class = LoanSerializer
 
     def perform_create(self, serializer):
